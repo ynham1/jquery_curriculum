@@ -26,19 +26,22 @@
       // .keyup() 文字入力後に発火されるイベントです。
       // .replace(/\s+/g,'').length 改行を含まない文字数を取得します。
       // .val() input要素のvalueを取得します。
-      $('.input').on('keyup',function(){
-        var len = $(this).val().replace(/\s+/g,'').length;
-        // console.log($(this).val());
-        $('.rest-count').html(30 - len);
-        console.log(len);
-        if (len < 30){
-          $('.rest-count').removeClass('.red');
-          // console.log('???');
-        } else {
-          $('.rest-count').addClass('.red')
-                          // .css('color','red');
-                          console.log('???');
-        };
+      $(function(){
+        $('.input').on('keyup',function(){
+          var len = $(this).val().replace(/\s+/g,'').length;//replaceメソッドは文字列に対してしか使えないので、$(this)でHTMLから要素を取得し、.val()で記入した文字列を取得している
+          // console.log($(this).val());
+          var count = 30; //いきなり数字を入れると分かりにくいので、変数指定している
+          $('.rest-count').html(count - len);
+          console.log(len);
+          if (len < count){
+            $('.rest-count').removeClass('red');
+            // console.log('???');
+          } else {
+            $('.rest-count').addClass('red')//addClass,removeClassで取るのはクラス名のみで、ドットは不要になる、且つ、今回取得しているのはHTML要素ではなく、CSSからの取得である
+                            // .css('color','red');
+                            // console.log('???');
+          };
+        });
       });
     </script>
   </body>

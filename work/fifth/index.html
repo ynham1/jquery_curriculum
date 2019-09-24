@@ -100,10 +100,10 @@
       $(function(){
         $('.select').change(function(){
           var select = $(this).val();
-          if (select === 'all') {
+          if (select === 'all') {//値を比較する時、＝２つは基本使わず、＝３つを使用する
             $('.list li').show();
           } else {
-            $('.list li').each(function(index,element){
+            $('.list li').each(function(index,element){//elementの変数名は何でもいい、ループする.list liを取得している
               var val = $(element).data('category-type');
               // console.log(index);
               console.log(element);

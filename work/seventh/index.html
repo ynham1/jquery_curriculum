@@ -34,6 +34,129 @@
       // .data() 要素のdata属性を取得します。
       // .width() 要素の幅を取得します。
       // .length 要素の個数を取得します。
+      $(function(){
+        var count = 0,
+            sliderWidth = $('.slider-list li').width(),
+            sliderNum = $('.slider-list li').length;
+            console.log(sliderWidth);
+            console.log(sliderNum);
+        $('.slider-ctrl-btn').on('click',function(){
+          var select = $(this).data('ctrl');
+          console.log(select);
+          if (select === 'prev' && 0 <= count < sliderNum){
+            count--;
+          } else if(select === 'next'&& 0 <= count < sliderNum){
+            count++;
+          };
+          if (count >= sliderNum){
+            count = 0;
+          } else if (count < 0){
+            count = sliderNum-1;
+          };
+          console.log(count);
+          $('.slider-list').stop().animate({
+            left: count * -sliderWidth
+          },700);
+        });
+      });
+
+        //:&&...且つ//:||...又は
+
+          // if (select === 'prev' && 0 <= count <= 3){
+          //   count--;
+          // } else if(select === 'next'&& 0 <= count <= 3){
+          //   count++;
+          // };
+          // //:&&...且つ//:||...又は
+          // if (count > 3){
+          //   count = 0;
+          // } else if (count < 0){
+          //   count = 3;
+          // };
+          // console.log(count);
+          // $('.slider-list').stop().animate({
+          //   left: count * -sliderWidth
+          // },700);
+
+                // $('.slider-list').css('left',count * -sliderWidth);
+          // if (select === 'prev'){
+          //   count--;
+          // } else if(select === 'next'){
+          //   count++;
+          // };
+          // if (count > 3){
+          //   count = 0;
+          // } else if (count < 0){
+          //   count = 3;
+          // };
+
+        // $('.slider-list li').animate({
+        //   left: count * -sliderWidth
+        //   },'linear');
+        // console.log(sliderNum);
+        // console.log(sliderWidth);
+        // console.log(count);
+        // console.log(select);
+      // $(function(){
+      //   var count = 0,
+      //       sliderWidth = $('.slider-list li').width(),
+      //       sliderNum = $('.slider-list li').length;
+      //   console.log(sliderNum);
+      //   console.log(sliderWidth);
+      //   $('.slider-list').css('width',sliderWidth);
+      //   var slide =function(){
+      //     if (count < 0){
+      //       console.log('+++');
+      //       count = sliderNum -1;
+      //     } else if(count >= sliderNum){
+      //       console.log('!!!');
+      //       count = 0;
+      //     };
+      //   };
+      //   $('.slider-list').stop().animate({
+      //     left: count * -sliderWidth
+      //   });
+      //   $('.is-prev').on('.click',function(){
+      //     count--;
+      //     slide();
+      //     console.log('?!?');
+      //   });
+      //   $('.is-next').on('.click',function(){
+      //     count++;
+      //     slide();
+      //     console.log('?!');
+      //   });
+      //   var slider = function(){
+      //     $('.slider-list').animate({
+      //     left: count * -sliderWidth
+      //     },'linear');
+      //   };
+
+          // if (select === 'prev'){
+          //   if (0 <= count <= 3){
+          //     count--;
+          //   } else if(count < 0){
+          //     count = 3;
+          //   };
+          // } else if(select === 'next'){
+          //   if (0 <= count <= 3){
+          //     count++;
+          //   } else if(count > 3){
+          //     count = 0;
+          //   };
+          // };
+
+          // if (0 <= count <= 3){
+          //   if (select === 'prev'){
+          //     count--;
+          //   } else if(select === 'next'){
+          //     count++;
+          //   };
+          // } else if(count < 0) {
+          //   count = 3;
+          // } else if(count > 3) {
+          //   count = 0;
+          // };
     </script>
   </body>
 </html>

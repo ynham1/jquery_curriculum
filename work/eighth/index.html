@@ -42,6 +42,48 @@
       // .offset().top 要素の位置を取得します。
       // .fadeIn() 要素をフェードインさせる。
       // .fadeOut() 要素をフェードアウトさせる。
+      $(function(){
+        $('.menu__btn').on('click',function(){
+          var btnData = $(this).data();
+          var contentsData = $('.contents.title').data();
+          var target = $(btnData = contentsData);
+          $('html,body').animate({scroll: target},'swing');
+          // return false;
+          console.log(btnData);
+          console.log(contentsData);
+          console.log('!');
+        });
+        // var btnData = $('.menu__btn').data('scroll-place-type');
+        // var contentsData = $('.contents　.title').data('scroll-place-type');
+        // console.log(contentsData);
+        // console.log(btnData);
+      });
+      $(function(){
+        var topBtn = $('.scrollTopBtn');
+        $(window).scroll(function () {
+          if ($(this).scrollTop() > 100) {
+            topBtn.fadeIn();
+            topBtn.css('display','');
+          } else {
+            topBtn.fadeOut();
+          };
+        });
+        topBtn.click(function () {
+          $('body,html').animate({
+              scrollTop: 0
+          });
+        // return false;
+        });
+      });
+      // $('.contents').scroll(function(){
+      //   $('.scrollTopBtn').fadeIn();
+      // });
+      // $('.scrollTopBtn').on('click',function(){
+      //   $(this).fadeOut();
+      //   $('.contents').animate({ 
+      //     scrollTop: スクロール位置
+      //   });
+      // });
     </script>
   </body>
 </html>
