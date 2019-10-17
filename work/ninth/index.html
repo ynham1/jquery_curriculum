@@ -53,9 +53,9 @@
             url: './data.json',
             dataType: 'json',
           })
-          .done(function(data){
-            $('.colorList__item').append(data);//colorsArray
-            console.log(data);
+          .done(function(json){
+            $('.colorList__title').append(json[i].colorName + '' + json[i].hexValue);//colorsArray
+            console.log(json);
           });
         // $.each(配列, function functionName() {
           // success: function(data) {
@@ -70,3 +70,4 @@
     </script>
   </body>
 </html>
+

@@ -38,13 +38,18 @@
         var count = 0,
             sliderWidth = $('.slider-list li').width(),//=600px
             sliderNum = $('.slider-list li').length,
-            sliderVal = [];
+            sliderVal = [],
+            targetWidth = 0;
+        for (var i = 0; i < sliderNum; i++){
+          sliderVal[i] = -1 * targetWidth;
+          targetWidth += $('.slider-list li').eq(i).width();
+        }
         $('.slider-ctrl-btn').on('click',function(){
           var select = $(this).data('ctrl');
-          for(var i= 0;i< sliderNum;++i){
-            sliderVal[i] = count * -sliderWidth;
-            console.log(sliderVal[i]);
-          };
+          // for(var i= 0;i< sliderNum;++i){
+          //   sliderVal[i] = count * -sliderWidth;
+          //   console.log(sliderVal[i]);
+          // };
           if (select === 'prev'){
             count--;
             if (count < 0){
@@ -57,7 +62,6 @@
             }
           };
           $('.slider-list').stop().animate({
-            // left: count * -sliderWidth
             left : sliderVal[count]
           },700);
         });
