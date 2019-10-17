@@ -43,47 +43,38 @@
       // .fadeIn() 要素をフェードインさせる。
       // .fadeOut() 要素をフェードアウトさせる。
       $(function(){
-        $('.menu__btn').on('click',function(){
-          var btnData = $(this).data();
-          var contentsData = $('.contents.title').data();
-          var target = $(btnData = contentsData);
-          $('html,body').animate({scroll: target},'swing');
-          // return false;
-          console.log(btnData);
-          console.log(contentsData);
-          console.log('!');
-        });
-        // var btnData = $('.menu__btn').data('scroll-place-type');
-        // var contentsData = $('.contents　.title').data('scroll-place-type');
-        // console.log(contentsData);
-        // console.log(btnData);
-      });
-      $(function(){
-        var topBtn = $('.scrollTopBtn');
-        $(window).scroll(function () {
-          if ($(this).scrollTop() > 100) {
-            topBtn.fadeIn();
-            topBtn.css('display','');
-          } else {
-            topBtn.fadeOut();
+        $('.menu__btn').click(function(){
+          var btnData = $(this).data('scrollPlaceType'),
+              num = $(this).index(),
+              contentsNum = $('.title').eq(num),
+              contentsData = contentsNum.data('scrollPlaceType');
+          if(btnData === contentsData){
+            var target = contentsNum.offset().top;
+            console.log(target);
           };
-        });
-        topBtn.click(function () {
           $('body,html').animate({
-              scrollTop: 0
+            scrollTop: target
+          },'smooth');
+        return false;
+        });
+        $(function(){
+          var topBtn = $('.scrollTopBtn');
+          $(window).scroll(function(){
+            if ($(this).scrollTop() > 100) {
+              topBtn.fadeIn();
+              topBtn.css('display','');
+            } else {
+              topBtn.fadeOut();
+            };
           });
-        // return false;
+          topBtn.click(function(){
+            $('body,html').animate({
+              scrollTop: 0
+            });
+          return false;
+          });
         });
       });
-      // $('.contents').scroll(function(){
-      //   $('.scrollTopBtn').fadeIn();
-      // });
-      // $('.scrollTopBtn').on('click',function(){
-      //   $(this).fadeOut();
-      //   $('.contents').animate({ 
-      //     scrollTop: スクロール位置
-      //   });
-      // });
     </script>
   </body>
 </html>

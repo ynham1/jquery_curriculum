@@ -36,26 +36,29 @@
       // .length 要素の個数を取得します。
       $(function(){
         var count = 0,
-            sliderWidth = $('.slider-list li').width(),
-            sliderNum = $('.slider-list li').length;
-            console.log(sliderWidth);
-            console.log(sliderNum);
+            sliderWidth = $('.slider-list li').width(),//=600px
+            sliderNum = $('.slider-list li').length,
+            sliderVal = [];
         $('.slider-ctrl-btn').on('click',function(){
           var select = $(this).data('ctrl');
-          console.log(select);
-          if (select === 'prev' && 0 <= count < sliderNum){
+          for(var i= 0;i< sliderNum;++i){
+            sliderVal[i] = count * -sliderWidth;
+            console.log(sliderVal[i]);
+          };
+          if (select === 'prev'){
             count--;
-          } else if(select === 'next'&& 0 <= count < sliderNum){
+            if (count < 0){
+              count = sliderNum-1;
+            };
+          } else if(select === 'next'){
             count++;
+            if (count >= sliderNum){
+              count = 0;
+            }
           };
-          if (count >= sliderNum){
-            count = 0;
-          } else if (count < 0){
-            count = sliderNum-1;
-          };
-          console.log(count);
           $('.slider-list').stop().animate({
-            left: count * -sliderWidth
+            // left: count * -sliderWidth
+            left : sliderVal[count]
           },700);
         });
       });
