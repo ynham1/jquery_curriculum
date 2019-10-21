@@ -11,11 +11,7 @@
   </head>
   <body>
     <div class="wrapper">
-      <ul class="colorList">
-        <li class="colorList__item">
-          <p class="colorList__title" style="background-color: colorsArray;"></p>
-        </li>
-      </ul>
+      <ul class="colorList"></ul>
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
@@ -47,25 +43,51 @@
       //
       // このテンプレートに取得してきた中身を入れて表示します。
       $(function(){
-        $.each(targetId, function(i){
+        //----------間違い------------
+        // $.getJSON('../json/data.json',function(data_colorsArray){
+        //   for(var i in data_colorsArray){
+        //     var x = '<li class="colorList__item">'
+        //           + data_colorsArray[i].colorName
+        //           + '<p class="colorList__title">'
+        //           + data_colorsArray[i].hexValue
+        //           + '</p>'
+        //           + '</li>';
+        //     $('.colorlist').append(x);
+        //   };
+        // });
           $.ajax({
             type: 'GET',
             url: './data.json',
             dataType: 'json',
           })
           .done(function(json){
-            $('.colorList__title').append(json[i].colorName + '' + json[i].hexValue);//colorsArray
-            console.log(json);
-          });
-        // $.each(配列, function functionName() {
-          // success: function(data) {
-          //   $('.colorList').append(data); //append...揷入//
-          // },
-          // error:function() {
-          //   alert('Error!');-------hexValue
-          // }
-        // });
-          });
+            // console.log(json.colorsArray);
+            $.each(json.colorsArray, function(i,val){//$.each(配列, function functionName(i番め,i番めで取得出来る要素) {})
+              var name = val.colorName,
+                  value = val.hexValue;
+              console.log(name);
+              console.log(value);
+              //----------pattern1-----------
+              // $('.colorList').append(//--------append :揷入---------
+              //   '<li class="colorList__item">'+
+              //   '<p class="colorList__title" style="background-color: '+ value +';">'+ name +'</p>'+
+              //   '</li>');//テンプレートを入れ込み、取得した値をそれぞれに代入する
+              //----------pattern2-----------
+              for(i =0;i<json.colorsArray.length;i++){
+                $('.colorList').html(
+                  '<li class="colorList__item">'
+                  +'<p class="colorList__title" style="background-color: '+ value +';">'+ name +'</p>'
+                  +'</li>'
+                  +'<li class="colorList__item">'//2
+                  +'<p class="colorList__title" style="background-color: '+ value +';">'+ name +'</p>'
+                  +'</li>'
+                );//繰り返しの最後の値で上書きされる為、最後の値しか表示されない
+              };
+            });
+            // error:function() {
+            //   alert('Error!');
+            // }
+        });
       });
     </script>
   </body>

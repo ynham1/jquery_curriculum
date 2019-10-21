@@ -43,20 +43,43 @@
       // .fadeIn() 要素をフェードインさせる。
       // .fadeOut() 要素をフェードアウトさせる。
       $(function(){
+        //-------------pattern1--------------
         $('.menu__btn').click(function(){
           var btnData = $(this).data('scrollPlaceType'),
-              num = $(this).index(),
-              contentsNum = $('.title').eq(num),
-              contentsData = contentsNum.data('scrollPlaceType');
-          if(btnData === contentsData){
-            var target = contentsNum.offset().top;
-            console.log(target);
-          };
+              contentsBody = $('.contents').find('[data-scroll-place-type=" '+btnData+' "]').offset().top;
+          console.log(contentsBody);
           $('body,html').animate({
-            scrollTop: target
+            scrollTop: contentsBody
           },'smooth');
         return false;
         });
+        //-------------pattern2--------------
+        //   var targetData = $('.title[data-scroll-place-type=" '+btnData+' "]');
+        //   $('.contents .title').each(function(i){
+        //     console.log(i);
+        //     var contentsData = $('.contents .title').eq(i).data('scrollPlaceType');
+        //     console.log(contentsData);
+        //     if (btnData === contentsData){
+        //       target = $('.contents .title').eq(i).offset().top;
+        //       console.log(target);
+        //     };
+        //   });
+        //   $('body,html').animate({
+        //     scrollTop: target
+        //   },'smooth');
+        // return false;
+        // });
+
+        //-------------動くが今回は違う--------------
+        // $('.menu__btn').click(function(){
+        //   var btnData = $(this).data('scrollPlaceType'),
+        //       num = $(this).index(),
+        //       contentsNum = $('.title').eq(num),
+        //       contentsData = contentsNum.data('scrollPlaceType');
+        //   if(btnData === contentsData){
+        //     var target = contentsNum.offset().top;
+        //     console.log(target);
+        //   };
         $(function(){
           var topBtn = $('.scrollTopBtn');
           $(window).scroll(function(){
