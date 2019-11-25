@@ -41,7 +41,7 @@
       // $.ajax({
       //   url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
       //   type: 'GET',
-      //   datatype: 'json',
+      //   datatype: 'data',
       //   data: {
       //     // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
       //     applicationId: '1019399324990976605', // (今回はこのIDを使用してください)
@@ -67,7 +67,218 @@
       // </li>
       //
       //
-      //
+      $(function(){
+        var clickCount = 1;
+        var prev = "";
+        $('.search__btn').on('click',function(){
+          var current = $('.search__text__input').val();
+          if(current === prev) {
+            clickCount++;
+          } else {
+            clickCount = 1;
+          }
+          prev = current;
+//----------------------------------------------------
+          $.ajax({//非同期でサーバー間の通信を行うこと
+            type: 'GET',//HTTP通信の種類を設定
+            url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+            dataType: 'json',//サーバから返されるデータの型//dataはそもそも無い//JSON形式データとしてJavaScriptのオブジェクトに変換
+            data:{//サーバに送信する値
+              applicationId: '1019399324990976605', 
+              booksGenreId: '001',
+              keyword: current,
+              hits: 20,
+              page: clickCount
+            },
+          }).done(function(json){
+            prependList();
+            $('.message').remove();
+            if(clickCount === 1){
+              $('.lists').empty();
+              prependList();
+            };
+            if(json.count == 0){
+              alert();
+            };
+//----------------------------------------------------
+            function prependList(){
+              var list = '';
+              $.each(json.Items,function(i,val){
+                urlVal = val.Item.itemUrl,
+                imageVal = val.Item.largeImageUrl,
+                titleVal = val.Item.title,
+                authorVal = val.Item.author,
+                publisherVal = val.Item.publisherName;
+                list += '<li class="lists__item">'+
+                  '<div class="lists__item__inner">'+
+                  '<a href="'+urlVal+'" class="lists__item__link" target="_blank">'+
+                  '<img src=" '+imageVal+' " class="lists__item__img" alt="'+titleVal+'">'+
+                  '<p class="lists__item__detail">作品名：'+titleVal+'</p>'+
+                  '<p class="lists__item__detail">作者　：'+authorVal+'</p>'+
+                  '<p class="lists__item__detail">出版社：'+publisherVal+'</p>'+
+                  '</a></div></li>';
+                console.log(val);
+              });
+              $('.lists').prepend(list);//子要素の先頭に追加
+            };
+//----------------------------------------------------
+            function alert(){
+              $('.search').after('<div class ="message">'+
+                '検索結果が見つかりませんでした。'+
+                '<br>'+'別のキーワードで検索して下さい。'+
+                '</div>'
+              );
+            };
+//----------------------------------------------------
+          }).fail(function(json){
+            console.log(json);
+            $('.message').remove();
+            $('.search').after('<div class ="message">'+json.responseJSON.error_description+'</div>');
+          });
+        });
+      });
+
+  //     $(function(){
+  //       var clickCount = 1;
+  //       var prev = "";
+  //       $('.search__btn').on('click',function(){
+  //         var current = $('.search__text__input').val();
+  //         if(current === prev) {
+  //           // console.log('等しい');
+  //           clickCount++;
+  //         } else {
+  //           // console.log('等しくない');
+  //           clickCount = 1;
+  //         }
+  //         // console.log(current);
+  //         // console.log(prev);
+  //         prev = current;
+  //         $.ajax({
+  //           type: 'GET',
+  //           url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+  //           dataType: 'json',//dataは間違い
+  //           data:{
+  //             applicationId: '1019399324990976605', 
+  //             booksGenreId: '001',
+  //             keyword: current,
+  //             hits: 20,
+  //             page: clickCount
+  //           },
+  //         }).done(function(json, status, xhr){
+  //           // var prependArray = [];
+  //           // prependArray = $('.lists__item');
+  //           // console.log(prependArray);
+  //           // prependArray.reverse();
+  //           // console.log(json);
+  //           if(clickCount === 1){
+  //             $('.lists').empty();
+  //             moveGet();
+  //           // }else if(xhr.status === 429){
+  //           //   $('.search').after(
+  //           //     '<div class ="message">'+
+  //           //     'リクエスト数が上限に達しました。'+'<br>'+
+  //           //     'しばらく時間を空けてから、ご利用ください。'+'</div>');
+  //           }else{
+  //             moveGet();
+  //           };// $('.lists').remove();// $('.lists').find('.lists__item__detail').remove(':conteins("prevWord")');// $('.lists__item__detail').remove(':conteins("prevWord")');間違い
+  //           $('.message').remove();
+  //           if(json.count == 0){
+  //             alert();
+  //           };
+  // //---------------------------------------------------
+  //           function moveGet(){
+  //             movePrepend();
+  //           };
+  // //---------------------------------------------------
+  // // function movePrepend(){
+  // //             $('ul').prepend(//replaceWith : 置換//detach : 要素を削除//empty : 要素内を削除//append : 後ろに追加
+  // //               // $('.lists').append(
+  // //                 '<li class="lists__item">'+
+  // //                 '<div class="lists__item__inner">'+
+  // //                 '<a href="'+itemVal+'" class="lists__item__link" target="_blank">'+
+  // //                 '<img src=" '+imageVal+' " class="lists__item__img" alt="'+titleVal+'">'+
+  // //                 '<p class="lists__item__detail">作品名：'+titleVal+'</p>'+
+  // //                 '<p class="lists__item__detail">作者　：'+authorVal+'</p>'+
+  // //                 '<p class="lists__item__detail">出版社：'+publisherVal+'</p>'+
+  // //                 '</a>'+
+  // //                 '</div>'+
+  // //                 '</li>'//)
+  // //               );
+  // //             // var $arr = $('li').sort(function(a, b){
+  // //             //   return ($(a).text() > $(b).text() ? 1 : -1);
+  // //             //   return ($(a).text() < $(b).text() ? -1 : 1);  //ソート条件
+  // //             // });
+  // //           };
+  // //----------------------------------------------------
+  //           function movePrepend(){
+  //             // var list = '';
+  //             // list += '<li class="lists__item">'+
+  //             //   '<div class="lists__item__inner">'+
+  //             //   '<a href="'+itemVal+'" class="lists__item__link" target="_blank">'+
+  //             //   '<img src=" '+imageVal+' " class="lists__item__img" alt="'+titleVal+'">'+
+  //             //   '<p class="lists__item__detail">作品名：'+titleVal+'</p>'+
+  //             //   '<p class="lists__item__detail">作者　：'+authorVal+'</p>'+
+  //             //   '<p class="lists__item__detail">出版社：'+publisherVal+'</p>'+
+  //             //   '</a></div></li>';
+  //             var list = '';
+  //             $.each(json.Items,function(i,val){
+  //               itemVal = val.Item.itemUrl,
+  //               imageVal = val.Item.largeImageUrl,
+  //               titleVal = val.Item.title,
+  //               authorVal = val.Item.author,
+  //               publisherVal = val.Item.publisherName;
+  //               // prependArray.reverse();
+                
+  //               list += '<li class="lists__item">'+
+  //                 '<div class="lists__item__inner">'+
+  //                 '<a href="'+itemVal+'" class="lists__item__link" target="_blank">'+
+  //                 '<img src=" '+imageVal+' " class="lists__item__img" alt="'+titleVal+'">'+
+  //                 '<p class="lists__item__detail">作品名：'+titleVal+'</p>'+
+  //                 '<p class="lists__item__detail">作者　：'+authorVal+'</p>'+
+  //                 '<p class="lists__item__detail">出版社：'+publisherVal+'</p>'+
+  //                 '</a></div></li>';
+  //               console.log(list);
+  //             });
+  //             $('.lists').prepend(list);
+  //           };
+  // //----------------------------------------------------
+  //           function alert(){
+  //             $('.search').after('<div class ="message">'+
+  //               '検索結果が見つかりませんでした。'+
+  //               '<br>'+'別のキーワードで検索して下さい。'+
+  //               '</div>'
+  //             );
+  //           };
+  // //----------------------------------------------------
+  //         }).fail(function(json){
+  //           // console.log(json);
+  //           $('.message').remove();
+  //           console.log(json);
+  //           $('.search').after('<div class ="message">'+json.responseJSON.error_description+'</div>');
+  // //----------------------------------------------------
+  //           // function alert2(){
+  //           //   if(current == ""){
+  //           //     $('.search').after(
+  //           //       '<div class ="message">'+
+  //           //       '検索結果が見つかりませんでした。'+'<br>'+
+  //           //       'キーワードを入力して下さい。'+'</div>');
+  //           //   }else if(1 <= clickCount <= 2){
+  //           //     $('.search').after(
+  //           //       '<div class ="message">'+
+  //           //       '検索キーワードは半角2文字もしくは全角1文字以上、'+'<br>'+
+  //           //       'ひらがな・カタカナ・記号の場合は2文字以上で指定して下さい。'+'</div>');
+  //           //     // }else if(json.responseJSON){
+  //           //     //   '<div class ="message">'+
+  //           //     //   'リクエスト数が上限に達しました。'+'<br>'+
+  //           //     //   'しばらく時間を空けてから、ご利用ください。'+'</div>');
+  //           //   }else{
+  //           //     $('.search').after(
+  //           //       '<div class ="message">'+
+  //           //       'データ通信できませんでした。'+'<br>'+
+  //           //       '接続を確認してください。'+'</div>');
+  //           //   };
+  //           // };
+
     </script>
   </body>
 </html>

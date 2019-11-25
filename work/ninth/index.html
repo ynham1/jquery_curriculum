@@ -56,7 +56,7 @@
         //   };
         // });
           $.ajax({
-            type: 'GET',
+            type: 'GET',//defolt
             url: './data.json',
             dataType: 'json',
           })
@@ -73,13 +73,13 @@
                 '<li class="colorList__item">'+
                 '<p class="colorList__title" style="background-color: '+ value +';">'+ name +'</p>'+
                 '</li>');//テンプレートを入れ込み、取得した値をそれぞれに代入する
-
             //   ////----------pattern2-----------
             //     template += '<li class="colorList__item">'
             //               +'<p class="colorList__title" style="background-color: '+ value +';">'+ name +'</p>'
             //               +'</li>';
             });
             // $('.colorList').html(template);//繰り返しの最後の値で上書きされる
+            
             // error:function() {
             //   alert('Error!');
             // }
